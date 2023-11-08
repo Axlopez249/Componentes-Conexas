@@ -5,6 +5,7 @@
 #include "INodo.h"
 #include <map>
 #include <queue>
+#include <stack>
 #include "Arco.h"
 
 using namespace std;
@@ -118,16 +119,44 @@ public:
         return hashNodos.at(pId);
     }
 
-    vector<INodo> deepPath(INodo *pOrigen)
-    { // recorrido en profundidad
-        vector<INodo> result;
+    vector<INodo*> deepPath(INodo *pOrigen)
+    {
+    vector<INodo*> result;
+    stack<NodoGrafo *> nodosProcesados;
+
+    resetNodes();
+
+    NodoGrafo *puntoPartida = this->getNodo(pOrigen->getId());
+    nodosProcesados.push(puntoPartida);
+    puntoPartida->visitado = true;
+
+        while (!nodosProcesados.empty())
+        {
+            NodoGrafo *actual = nodosProcesados.top();
+            nodosProcesados.pop();
+
+            result.push_back(actual->getInfo());
+
+            vector<Arco *> *adyacentes = actual->getArcs();
+
+            for (int indiceArcos = 0; indiceArcos < adyacentes->size(); ++indiceArcos)
+            {
+                Arco *arco = adyacentes->at(indiceArcos);
+                NodoGrafo *adyacente = (NodoGrafo *)arco->getDestino();
+                if (!adyacente->visitado)
+                {
+                    nodosProcesados.push(adyacente);
+                    adyacente->visitado = true;
+                }
+            }
+        }
 
         return result;
     }
 
     vector<INodo *> broadPath(INodo *pOrigen)
     {
-        vector<INodo *> result;
+        vector<INodo    *> result;
         queue<NodoGrafo *> nodosProcesados;
         int visitados = 0;
 

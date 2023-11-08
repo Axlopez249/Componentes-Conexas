@@ -91,8 +91,14 @@ int main() {
 
 
 
-    vector<vector<INodo*>> componentesConectados = grafoEmpleos.encontrarComponentesConectados();
+    //vector<vector<INodo*>> componentesConectados = grafoEmpleos.encontrarComponentesConectados();
+    vector<INodo*> recorridoProfundidad = grafoEmpleos.deepPath(TrabajadorAlicia);
+    for (INodo *nodo : recorridoProfundidad) {
+        std::cout << nodo->getId() << std::endl;
+    }
+    
 
+    /*
     // Imprimir la información de los componentes conectados
     for (size_t i = 0; i < componentesConectados.size(); ++i) {
         cout << "Componente Conectado " << (i + 1) << ": ";
@@ -104,7 +110,7 @@ int main() {
    
 
     
-    }
+    }*/
     cout << "termino bien" << endl;
 
 }
